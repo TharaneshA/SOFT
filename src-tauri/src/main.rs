@@ -6,35 +6,29 @@
 mod file_indexer;
 mod vector_search;
 mod websocket;
+mod types;
 
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use tauri::{Manager, State};
-use serde::{Deserialize, Serialize};
+use tokio::sync::Mutex;
+use types::{FileInfo, AppError, SearchResult, SearchQuery};
+use websocket::WebSocketServer;
+use tracing_subscriber::{fmt, EnvFilter};
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct FileInfo {
-    id: String,
-    name: String,
-    path: String,
-    file_type: String,
-    summary: String,
-    content: String,
-    modified: String,
-}
-
+#[derive(Default)]
 struct AppState {
     indexed_folders: Arc<Mutex<Vec<String>>>,
     files: Arc<Mutex<Vec<FileInfo>>>,
 }
 
 #[tauri::command]
-fn get_indexed_folders(state: State<AppState>) -> Vec<String> {
-    state.indexed_folders.lock().unwrap().clone()
+async fn get_indexed_folders(state: State<'_, AppState>) -> Result<Vec<String>, String> {
+    Ok(state.indexed_folders.lock().await.clone())
 }
 
 #[tauri::command]
-fn add_indexed_folder(folder_path: String, state: State<AppState>) -> Result<(), String> {
-    let mut folders = state.indexed_folders.lock().unwrap();
+async fn add_indexed_folder(folder_path: String, state: State<'_, AppState>) -> Result<(), String> {
+    let mut folders = state.indexed_folders.lock().await;
     if !folders.contains(&folder_path) {
         folders.push(folder_path);
     }
@@ -42,28 +36,46 @@ fn add_indexed_folder(folder_path: String, state: State<AppState>) -> Result<(),
 }
 
 #[tauri::command]
-fn remove_indexed_folder(folder_path: String, state: State<AppState>) -> Result<(), String> {
-    let mut folders = state.indexed_folders.lock().unwrap();
+async fn remove_indexed_folder(folder_path: String, state: State<'_, AppState>) -> Result<(), String> {
+    let mut folders = state.indexed_folders.lock().await;
     folders.retain(|path| path != &folder_path);
     Ok(())
 }
 
 #[tauri::command]
-fn search_files(query: String, state: State<AppState>) -> Vec<FileInfo> {
-    // In a real implementation, this would use the vector search and Tantivy
-    // For now, we'll just return all files
-    state.files.lock().unwrap().clone()
+async fn search_files(query: String, state: State<'_, AppState>) -> Result<SearchResult, String> {
+    let files = state.files.lock().await;
+    Ok(SearchResult {
+        files: files.clone(),
+        total: files.len(),
+        query_time_ms: 0,
+    })
 }
 
-fn main() {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    // Initialize logging
+    tracing_subscriber::fmt()
+        .with_env_filter(EnvFilter::from_default_env()
+            .add_directive("file_search_app=debug".parse()?)
+            .add_directive("actix_web=info".parse()?)
+        )
+        .init();
+
+    // Initialize WebSocket server
+    let ws_server = WebSocketServer::new().await
+        .map_err(|e| format!("Failed to create WebSocket server: {}", e))?;
+
+    // Start WebSocket server in the background
+    let ws_handle = tokio::spawn(async move {
+        if let Err(e) = ws_server.start("127.0.0.1", 8080).await {
+            eprintln!("WebSocket server error: {}", e);
+        }
+    });
+
+    // Start Tauri application
     tauri::Builder::default()
-        .manage(AppState {
-            indexed_folders: Arc::new(Mutex::new(vec![
-                String::from("/Users/Documents"),
-                String::from("/Users/Desktop"),
-            ])),
-            files: Arc::new(Mutex::new(vec![])),
-        })
+        .manage(AppState::default())
         .invoke_handler(tauri::generate_handler![
             get_indexed_folders,
             add_indexed_folder,
@@ -71,9 +83,19 @@ fn main() {
             search_files
         ])
         .setup(|app| {
-            // Initialize the file indexer and websocket server here
+            let app_handle = app.handle();
+            
+            // You can add any additional setup here
+            // For example, initializing the file watcher or setting up IPC handlers
+            
             Ok(())
         })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+
+    // Wait for WebSocket server to finish (it won't in practice)
+    ws_handle.await?
+        .map_err(|e| format!("WebSocket server failed: {}", e))?;
+
+    Ok(())
 }

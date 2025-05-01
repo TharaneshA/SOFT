@@ -1,109 +1,185 @@
-use std::sync::{Arc, Mutex};
-use std::collections::HashMap;
-use std::thread;
-use ws::{listen, Handler, Message, Sender, CloseCode};
-use serde::{Serialize, Deserialize};
-use serde_json;
+use std::sync::Arc;
+use actix_web::{web, App, Error, HttpRequest, HttpResponse, HttpServer};
+use actix_ws::Message as WsMessage;
+use futures::{StreamExt, SinkExt};
+use serde_json::json;
+use tokio::sync::mpsc;
+use crate::types::{WebSocketMessage, SearchQuery, AppError};
+use crate::file_indexer::{FileIndexer, FileEvent};
+use crate::vector_search::VectorSearch;
+use tracing::{info, error};
 
-#[derive(Debug, Serialize, Deserialize)]
-pub enum WebSocketMessage {
-    Search { query: String },
-    IndexFolder { path: String },
-    RemoveFolder { path: String },
-    SearchResult { files: Vec<String> },
-    Error { message: String },
+pub struct WebSocketServer {
+    file_indexer: Arc<FileIndexer>,
+    vector_search: Arc<VectorSearch>,
+    file_events_rx: mpsc::Receiver<FileEvent>,
 }
 
-struct WebSocketHandler {
-    out: Sender,
-    clients: Arc<Mutex<HashMap<usize, Sender>>>,
-    id: usize,
-}
+impl WebSocketServer {
+    pub async fn new() -> Result<Self, AppError> {
+        let (file_indexer, file_events_rx) = FileIndexer::new().await?;
+        let vector_search = VectorSearch::new().await?;
 
-impl Handler for WebSocketHandler {
-    fn on_open(&mut self, _: ws::Handshake) -> ws::Result<()> {
-        // Add the new client to our map
-        self.clients.lock().unwrap().insert(self.id, self.out.clone());
-        Ok(())
+        Ok(Self {
+            file_indexer: Arc::new(file_indexer),
+            vector_search: Arc::new(vector_search),
+            file_events_rx,
+        })
     }
 
-    fn on_message(&mut self, msg: Message) -> ws::Result<()> {
-        // Parse the message
-        if let Ok(text) = msg.as_text() {
-            match serde_json::from_str::<WebSocketMessage>(text) {
-                Ok(message) => {
-                    // Process the message based on its type
-                    match message {
-                        WebSocketMessage::Search { query } => {
-                            // In a real implementation, this would call the search function
-                            println!("Received search query: {}", query);
-                            
-                            // Send a mock response
-                            let response = WebSocketMessage::SearchResult { 
-                                files: vec!["file1.txt".to_string(), "file2.pdf".to_string()] 
-                            };
-                            let response_json = serde_json::to_string(&response).unwrap();
-                            self.out.send(response_json)
-                        },
-                        WebSocketMessage::IndexFolder { path } => {
-                            // In a real implementation, this would call the index function
-                            println!("Indexing folder: {}", path);
-                            Ok(())
-                        },
-                        WebSocketMessage::RemoveFolder { path } => {
-                            // In a real implementation, this would remove the folder from indexing
-                            println!("Removing folder: {}", path);
-                            Ok(())
-                        },
-                        _ => {
-                            // Client shouldn't send other message types
-                            let error = WebSocketMessage::Error { 
-                                message: "Invalid message type".to_string() 
-                            };
-                            let error_json = serde_json::to_string(&error).unwrap();
-                            self.out.send(error_json)
+    pub async fn start(self, host: &str, port: u16) -> Result<(), AppError> {
+        let file_indexer = self.file_indexer.clone();
+        let vector_search = self.vector_search.clone();
+        let mut file_events_rx = self.file_events_rx;
+
+        // Start the file watcher
+        file_indexer.start_watching().await?;
+
+        // Handle file events
+        tokio::spawn(async move {
+            while let Some(event) = file_events_rx.recv().await {
+                match event {
+                    FileEvent::Created(path) | FileEvent::Modified(path) => {
+                        if let Ok(mut files) = file_indexer.index_folder(&path).await {
+                            for file in files.iter_mut() {
+                                if let Err(e) = vector_search.add_document(file).await {
+                                    error!("Failed to add document to vector search: {}", e);
+                                }
+                            }
                         }
                     }
-                },
-                Err(e) => {
-                    // Send an error message back to the client
-                    let error = WebSocketMessage::Error { 
-                        message: format!("Failed to parse message: {}", e) 
-                    };
-                    let error_json = serde_json::to_string(&error).unwrap();
-                    self.out.send(error_json)
+                    FileEvent::Deleted(path) => {
+                        // Handle file deletion
+                        info!("File deleted: {}", path.display());
+                    }
                 }
             }
-        } else {
-            // Send an error message back to the client
-            let error = WebSocketMessage::Error { 
-                message: "Message must be text".to_string() 
-            };
-            let error_json = serde_json::to_string(&error).unwrap();
-            self.out.send(error_json)
-        }
-    }
+        });
 
-    fn on_close(&mut self, _: CloseCode, _: &str) {
-        // Remove the client from our map
-        self.clients.lock().unwrap().remove(&self.id);
+        // Start WebSocket server
+        let server = HttpServer::new(move || {
+            App::new()
+                .app_data(web::Data::new(file_indexer.clone()))
+                .app_data(web::Data::new(vector_search.clone()))
+                .route("/ws", web::get().to(ws_handler))
+        })
+        .bind((host, port))?;
+
+        info!("WebSocket server started on {}:{}", host, port);
+        server.run().await.map_err(|e| AppError::Other(e.to_string()))
     }
 }
 
-pub fn start_websocket_server(port: u16) {
-    let clients = Arc::new(Mutex::new(HashMap::new()));
-    let clients_clone = clients.clone();
-    
-    thread::spawn(move || {
-        let mut id_counter = 0;
-        
-        listen(format!("127.0.0.1:{}", port), move |out| {
-            id_counter += 1;
-            WebSocketHandler {
-                out,
-                clients: clients_clone.clone(),
-                id: id_counter,
+async fn ws_handler(
+    req: HttpRequest,
+    stream: web::Payload,
+    file_indexer: web::Data<Arc<FileIndexer>>,
+    vector_search: web::Data<Arc<VectorSearch>>,
+) -> Result<HttpResponse, Error> {
+    let (response, mut session, mut msg_stream) = actix_ws::handle(&req, stream)?;
+
+    // Start WebSocket handler
+    tokio::spawn(async move {
+        while let Some(Ok(msg)) = msg_stream.next().await {
+            match msg {
+                WsMessage::Text(text) => {
+                    match serde_json::from_str::<WebSocketMessage>(&text) {
+                        Ok(ws_msg) => {
+                            let result = match ws_msg {
+                                WebSocketMessage::Search(query) => {
+                                    handle_search(&query, &vector_search).await
+                                }
+                                WebSocketMessage::IndexFolder { path } => {
+                                    handle_index_folder(&path, &file_indexer, &vector_search).await
+                                }
+                                WebSocketMessage::RemoveFolder { path } => {
+                                    handle_remove_folder(&path, &file_indexer).await
+                                }
+                                _ => Err(AppError::Other("Invalid message type".to_string())),
+                            };
+
+                            let response = match result {
+                                Ok(msg) => msg,
+                                Err(e) => json!({
+                                    "type": "error",
+                                    "message": e.to_string()
+                                }),
+                            };
+
+                            if let Err(e) = session.text(response.to_string()).await {
+                                error!("Failed to send WebSocket response: {}", e);
+                                break;
+                            }
+                        }
+                        Err(e) => {
+                            error!("Failed to parse WebSocket message: {}", e);
+                            if let Err(e) = session.text(json!({
+                                "type": "error",
+                                "message": "Invalid message format"
+                            }).to_string()).await {
+                                error!("Failed to send error response: {}", e);
+                                break;
+                            }
+                        }
+                    }
+                }
+                WsMessage::Close(reason) => {
+                    info!("WebSocket connection closed: {:?}", reason);
+                    break;
+                }
+                _ => {}
             }
-        }).unwrap();
+        }
+
+        let _ = session.close(None).await;
     });
+
+    Ok(response)
 }
+
+async fn handle_search(
+    query: &SearchQuery,
+    vector_search: &web::Data<Arc<VectorSearch>>,
+) -> Result<serde_json::Value, AppError> {
+    let limit = query.limit.unwrap_or(10);
+    let result = vector_search.search(&query.text, limit).await?;
+
+    Ok(json!({
+        "type": "searchResult",
+        "data": result
+    }))
+}
+
+async fn handle_index_folder(
+    path: &str,
+    file_indexer: &web::Data<Arc<FileIndexer>>,
+    vector_search: &web::Data<Arc<VectorSearch>>,
+) -> Result<serde_json::Value, AppError> {
+    let path = std::path::PathBuf::from(path);
+    file_indexer.add_folder(path.clone()).await?;
+
+    let mut files = file_indexer.index_folder(&path).await?;
+    for file in files.iter_mut() {
+        vector_search.add_document(file).await?;
+    }
+
+    Ok(json!({
+        "type": "indexingComplete",
+        "data": {
+            "path": path,
+            "fileCount": files.len()
+        }
+    }))
+}
+
+async fn handle_remove_folder(
+    path: &str,
+    file_indexer: &web::Data<Arc<FileIndexer>>,
+) -> Result<serde_json::Value, AppError> {
+    // Implement folder removal logic here
+    Ok(json!({
+        "type": "folderRemoved",
+        "data": { "path": path }
+    }))
+}
+
