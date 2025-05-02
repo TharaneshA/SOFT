@@ -27,7 +27,7 @@
 ### 3. Install Python Dependencies
 - Open a terminal and run:
   ```sh
-  pip install sentence-transformers
+  pip install -r requirements.txt
   ```
 
 ### 4. Install Node.js Dependencies

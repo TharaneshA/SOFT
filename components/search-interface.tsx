@@ -12,7 +12,7 @@ import { FileFilter, type FileFilterOptions } from "@/components/file-filter"
 import { WelcomeScreen } from "@/components/welcome-screen"
 import { LoadingResults } from "@/components/loading-animation"
 import type { FileType } from "@/types/file"
-import { mockFiles } from "@/lib/mock-data"
+
 import { searchFiles } from "@/lib/tauri-service"
 import { getWebSocketService } from "@/lib/websocket-service"
 import { useToast } from "@/hooks/use-toast"
@@ -138,22 +138,9 @@ export function SearchInterface() {
     addToSearchHistory(query)
 
     try {
-      // Try to use the Tauri backend first
+      // Use the Tauri backend for search
       const results = await searchFiles(query)
-
-      if (results.length > 0) {
-        setFiles(results)
-      } else {
-        // Fallback to mock data for demo purposes
-        const filteredMockFiles = mockFiles.filter(
-          (file) =>
-            file.name.toLowerCase().includes(query.toLowerCase()) ||
-            file.content.toLowerCase().includes(query.toLowerCase()) ||
-            file.summary.toLowerCase().includes(query.toLowerCase()),
-        )
-
-        setFiles(filteredMockFiles.length > 0 ? filteredMockFiles : mockFiles)
-      }
+      setFiles(results)
 
       // Also send the query via WebSocket for real-time updates
       try {
@@ -170,15 +157,7 @@ export function SearchInterface() {
         variant: "destructive",
       })
 
-      // Fallback to mock data
-      const filteredMockFiles = mockFiles.filter(
-        (file) =>
-          file.name.toLowerCase().includes(query.toLowerCase()) ||
-          file.content.toLowerCase().includes(query.toLowerCase()) ||
-          file.summary.toLowerCase().includes(query.toLowerCase()),
-      )
-
-      setFiles(filteredMockFiles.length > 0 ? filteredMockFiles : [])
+      setFiles([])
     } finally {
       setIsSearching(false)
     }

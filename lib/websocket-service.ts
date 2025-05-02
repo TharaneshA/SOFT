@@ -8,17 +8,11 @@ export class WebSocketService {
   private reconnectAttempts = 0
   private maxReconnectAttempts = 5
   private reconnectTimeout: NodeJS.Timeout | null = null
-  private isMockMode = true // Use mock mode in browser preview
-
-  constructor(private url: string) {}
+  constructor(private url: string = "ws://localhost:8080/ws") {}
 
   connect(): Promise<void> {
     return new Promise((resolve, reject) => {
-      if (this.isMockMode) {
-        console.log("WebSocket in mock mode - would connect to:", this.url)
-        resolve()
-        return
-      }
+
 
       this.socket = new WebSocket(this.url)
 
@@ -54,7 +48,7 @@ export class WebSocketService {
   }
 
   private attemptReconnect() {
-    if (this.isMockMode) return
+
 
     if (this.reconnectAttempts < this.maxReconnectAttempts) {
       this.reconnectAttempts++
@@ -74,10 +68,7 @@ export class WebSocketService {
   }
 
   disconnect() {
-    if (this.isMockMode) {
-      console.log("WebSocket in mock mode - would disconnect")
-      return
-    }
+
 
     if (this.reconnectTimeout) {
       clearTimeout(this.reconnectTimeout)
@@ -110,20 +101,7 @@ export class WebSocketService {
   }
 
   send(messageType: string, data: any) {
-    if (this.isMockMode) {
-      console.log(`WebSocket in mock mode - would send ${messageType}:`, data)
 
-      // Simulate response for search in mock mode
-      if (messageType === "search") {
-        setTimeout(() => {
-          this.messageHandlers
-            .get("searchResult")
-            ?.forEach((handler) => handler({ files: ["mock-file-1.pdf", "mock-file-2.txt"] }))
-        }, 500)
-      }
-
-      return
-    }
 
     if (this.socket && this.socket.readyState === WebSocket.OPEN) {
       const message = { [messageType]: data }
