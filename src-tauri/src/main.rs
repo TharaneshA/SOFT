@@ -15,10 +15,20 @@ use types::{FileInfo, AppError, SearchResult, SearchQuery};
 use websocket::WebSocketServer;
 use tracing_subscriber::{fmt, EnvFilter};
 
-#[derive(Default)]
 struct AppState {
     indexed_folders: Arc<Mutex<Vec<String>>>,
     files: Arc<Mutex<Vec<FileInfo>>>,
+    app_handle: tauri::AppHandle,
+}
+
+impl Default for AppState {
+    fn default() -> Self {
+        Self {
+            indexed_folders: Arc::new(Mutex::new(Vec::new())),
+            files: Arc::new(Mutex::new(Vec::new())),
+            app_handle: tauri::AppHandle::default(),
+        }
+    }
 }
 
 #[tauri::command]
@@ -44,12 +54,26 @@ async fn remove_indexed_folder(folder_path: String, state: State<'_, AppState>) 
 
 #[tauri::command]
 async fn search_files(query: String, state: State<'_, AppState>) -> Result<SearchResult, String> {
-    let files = state.files.lock().await;
-    Ok(SearchResult {
-        files: files.clone(),
-        total: files.len(),
-        query_time_ms: 0,
-    })
+    // Create a search query
+    let search_query = SearchQuery {
+        text: query,
+        limit: Some(20), // Default limit
+    };
+    
+    // Get the WebSocketServer instance from the app state
+    let ws_server = state.app_handle.state::<Arc<WebSocketServer>>()
+        .ok_or_else(|| "WebSocketServer not initialized".to_string())?;
+    
+    // Use the vector search to perform the search
+    let result = ws_server.vector_search.search(&search_query.text, search_query.limit.unwrap_or(20))
+        .await
+        .map_err(|e| format!("Search failed: {}", e))?;
+    
+    // Update the app state with the search results
+    let mut files_state = state.files.lock().await;
+    *files_state = result.files.clone();
+    
+    Ok(result)
 }
 
 #[tokio::main]
@@ -65,37 +89,38 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Initialize WebSocket server
     let ws_server = WebSocketServer::new().await
         .map_err(|e| format!("Failed to create WebSocket server: {}", e))?;
-
-    // Start WebSocket server in the background
-    let ws_handle = tokio::spawn(async move {
-        if let Err(e) = ws_server.start("127.0.0.1", 8080).await {
-            eprintln!("WebSocket server error: {}", e);
-        }
-    });
+    let ws_server = Arc::new(ws_server);
 
     // Start Tauri application
     tauri::Builder::default()
-        .manage(AppState::default())
+        .manage(ws_server.clone())
+        .setup(|app| {
+            // Create app state with app handle
+            let app_state = AppState {
+                indexed_folders: Arc::new(Mutex::new(Vec::new())),
+                files: Arc::new(Mutex::new(Vec::new())),
+                app_handle: app.handle(),
+            };
+            app.manage(app_state);
+            
+            // Start WebSocket server in the background
+            let ws_server_clone = ws_server.clone();
+            tokio::spawn(async move {
+                if let Err(e) = ws_server_clone.start("127.0.0.1", 8080).await {
+                    eprintln!("WebSocket server error: {}", e);
+                }
+            });
+            
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             get_indexed_folders,
             add_indexed_folder,
             remove_indexed_folder,
             search_files
         ])
-        .setup(|app| {
-            let app_handle = app.handle();
-            
-            // You can add any additional setup here
-            // For example, initializing the file watcher or setting up IPC handlers
-            
-            Ok(())
-        })
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-
-    // Wait for WebSocket server to finish (it won't in practice)
-    ws_handle.await?
-        .map_err(|e| format!("WebSocket server failed: {}", e))?;
 
     Ok(())
 }

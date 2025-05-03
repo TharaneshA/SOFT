@@ -1,0 +1,1 @@
+{"rustc":10895048813736897673,"features":"","declared_features":"","target":0,"profile":0,"path":0,"deps":[[3445762082367621908,"build_script_build",false,9596930631730405442]],"local":[{"RerunIfChanged":{"output":"debug\\build\\qdrant-client-5f87ba500162c40d\\output","paths":["tests/snippets"]}}],"rustflags":[],"config":0,"compile_kind":0}

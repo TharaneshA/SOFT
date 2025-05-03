@@ -1569,6 +1569,7 @@ dependencies = [
  "tracing-subscriber",
  "uuid",
  "walkdir",
+ "zstd 0.13.3",
 ]
 
 [[package]]

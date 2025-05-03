@@ -1,0 +1,11 @@
+C:\project\SOFT\src-tauri\target\debug\deps\libgetrandom-7b0b7e5edfe26584.rmeta: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\util.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error_impls.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\windows.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\libgetrandom-7b0b7e5edfe26584.rlib: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\util.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error_impls.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\windows.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\getrandom-7b0b7e5edfe26584.d: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\util.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error_impls.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\windows.rs
+
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\lib.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\util.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\error_impls.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\getrandom-0.1.16\src\windows.rs:

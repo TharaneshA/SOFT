@@ -1,0 +1,10 @@
+C:\project\SOFT\src-tauri\target\debug\deps\libactix_utils-909cd45204d93032.rmeta: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\counter.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\mod.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\either.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\poll_fn.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\ready.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\actix_utils-909cd45204d93032.d: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\counter.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\mod.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\either.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\poll_fn.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\ready.rs
+
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\lib.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\counter.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\mod.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\either.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\poll_fn.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\actix-utils-3.0.1\src\future\ready.rs:

@@ -34,8 +34,8 @@ tauri-build = { version = "1.5", features = [] }
 default = ["custom-protocol"]
 custom-protocol = ["tauri/custom-protocol"]
 
-[patch.crates-io]
-zstd = { path = "zstd-rs" }
-zstd-safe = { path = "zstd-rs/zstd-safe" }
-zstd-sys = { path = "zstd-rs/zstd-sys" }
+[dependencies.zstd]
+version = "0.13"
+default-features = false
+features = ["arrays", "legacy"]
 

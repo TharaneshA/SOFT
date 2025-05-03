@@ -1,0 +1,12 @@
+C:\project\SOFT\src-tauri\target\debug\deps\libtinystr-f4d4f1c9c3c932f0.rmeta: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\macros.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\ascii.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\asciibyte.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\int_ops.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\unvalidated.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\ule.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\tinystr-f4d4f1c9c3c932f0.d: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\macros.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\ascii.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\asciibyte.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\int_ops.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\unvalidated.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\ule.rs
+
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\lib.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\macros.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\ascii.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\asciibyte.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\error.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\int_ops.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\unvalidated.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.7.6\src\ule.rs:

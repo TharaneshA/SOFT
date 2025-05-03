@@ -1,0 +1,10 @@
+C:\project\SOFT\src-tauri\target\debug\deps\libtantivy_stacker-7fe10fa0a88df9ad.rmeta: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\arena_hashmap.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\expull.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\fastcmp.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\fastcpy.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\memory_arena.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\tantivy_stacker-7fe10fa0a88df9ad.d: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\arena_hashmap.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\expull.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\fastcmp.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\fastcpy.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\memory_arena.rs
+
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\lib.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\arena_hashmap.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\expull.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\fastcmp.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\fastcpy.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tantivy-stacker-0.2.0\src\memory_arena.rs:

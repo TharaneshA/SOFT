@@ -1,0 +1,1 @@
+cargo:rustc-link-search=native=C:\project\SOFT\src-tauri\target\debug\build\webview2-com-sys-23cfabd421790220\out\x64

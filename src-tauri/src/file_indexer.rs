@@ -38,7 +38,6 @@ impl FileIndexer {
     }
 
     pub async fn start_watching(&mut self) -> Result<(), AppError> {
-        let paths = self.indexed_paths.read().await.clone();
         let file_tx = self.file_tx.clone();
 
         let mut watcher = notify::recommended_watcher(move |res: Result<Event, notify::Error>| {
@@ -59,6 +58,8 @@ impl FileIndexer {
             }
         })?;
 
+        // Get the current indexed paths and watch them
+        let paths = self.indexed_paths.read().await.clone();
         for path in paths {
             watcher.watch(&path, RecursiveMode::Recursive)?;
         }
@@ -182,7 +183,7 @@ impl FileIndexer {
         let mut data = Vec::new();
         file.read_to_end(&mut data)?;
 
-        let pdf = PdfFile::from_data(data)?;
+        let pdf = PdfFile::<Vec<u8>>::from_data::<Vec<u8>>(data)?;
         let mut content = String::new();
 
         for page in pdf.pages() {

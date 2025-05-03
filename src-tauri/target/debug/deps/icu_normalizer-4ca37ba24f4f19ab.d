@@ -1,0 +1,9 @@
+C:\project\SOFT\src-tauri\target\debug\deps\libicu_normalizer-4ca37ba24f4f19ab.rmeta: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\properties.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\provider.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\uts46.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\icu_normalizer-4ca37ba24f4f19ab.d: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\properties.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\provider.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\uts46.rs
+
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\lib.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\error.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\properties.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\provider.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\icu_normalizer-1.5.0\src\uts46.rs:

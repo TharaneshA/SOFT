@@ -8,6 +8,9 @@ export class WebSocketService {
   private reconnectAttempts = 0
   private maxReconnectAttempts = 5
   private reconnectTimeout: NodeJS.Timeout | null = null
+  private connected: boolean = false
+  private messageQueue: string[] = []
+  
   constructor(private url: string = "ws://localhost:8080/ws") {}
 
   connect(): Promise<void> {
@@ -19,6 +22,16 @@ export class WebSocketService {
       this.socket.onopen = () => {
         console.log("WebSocket connected")
         this.reconnectAttempts = 0
+        this.connected = true
+        
+        // Send any queued messages
+        while (this.messageQueue.length > 0) {
+          const message = this.messageQueue.shift()
+          if (message && this.socket) {
+            this.socket.send(message)
+          }
+        }
+        
         resolve()
       }
 
@@ -42,6 +55,7 @@ export class WebSocketService {
 
       this.socket.onclose = () => {
         console.log("WebSocket closed")
+        this.connected = false
         this.attemptReconnect()
       }
     })
@@ -97,6 +111,17 @@ export class WebSocketService {
       if (index !== -1) {
         handlers.splice(index, 1)
       }
+    }
+  }
+  
+  // search method is implemented below using the send method
+  
+  private sendMessage(message: string) {
+    if (this.socket && this.socket.readyState === WebSocket.OPEN) {
+      this.socket.send(message)
+    } else {
+      // Queue the message to be sent when the connection is established
+      this.messageQueue.push(message)
     }
   }
 

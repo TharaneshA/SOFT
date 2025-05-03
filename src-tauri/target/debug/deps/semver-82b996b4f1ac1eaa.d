@@ -1,0 +1,13 @@
+C:\project\SOFT\src-tauri\target\debug\deps\libsemver-82b996b4f1ac1eaa.rmeta: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\backport.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\display.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\eval.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\identifier.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\impls.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\parse.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\serde.rs
+
+C:\project\SOFT\src-tauri\target\debug\deps\semver-82b996b4f1ac1eaa.d: C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\lib.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\backport.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\display.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\error.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\eval.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\identifier.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\impls.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\parse.rs C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\serde.rs
+
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\lib.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\backport.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\display.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\error.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\eval.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\identifier.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\impls.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\parse.rs:
+C:\Users\thara\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\semver-1.0.26\src\serde.rs:
